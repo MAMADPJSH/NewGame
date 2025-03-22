@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class GameTest {
+public class  GameTest {
     public static void main(String[] args) {
         // Define players' colors
         List<Color> playerColors = Arrays.asList(Color.RED, Color.BLUE);
