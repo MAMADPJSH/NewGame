@@ -48,7 +48,7 @@ public class Board {
             // When creating tail positions
             for (int j = 0; j < tailLength - 1; j++) {
                 int actualPos = tailStart + j;
-                mainPositions.set(actualPos - 1, new Position(actualPos, (player + " Tail "+ j), PositionType.TAIL, player));
+                mainPositions.set(actualPos - 1, new Position(actualPos, (player + " Tail "+ (j + 1)), PositionType.TAIL, player));
             }
 
             // For end position
@@ -73,7 +73,6 @@ public class Board {
         }
     }
 
-
     public Position getPosition(int index) {
         return mainPositions.get(index - 1);
     }
@@ -86,9 +85,12 @@ public class Board {
         return getPosition(new Position(homePosNumber,(player + " End"), PositionType.HOME, player).getNumber());
     }
 
-
     public int getBoardSize() {
         return totalPositions;
+    }
+
+    public int getTailLength() {
+        return tailLength;
     }
 
     public int getTailStart(Color player) {

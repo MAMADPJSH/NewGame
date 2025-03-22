@@ -1,6 +1,7 @@
 import Dice.DiceShaker;
 import Dice.SingleDiceRoll;
 
+import java.util.ArrayList;
 import java.util.List;
 import Dice.*;
 
@@ -9,12 +10,14 @@ public class GameController {
     private List<Player> players;
     private int currentPlayerIndex;
     private DiceShaker diceRoller;
+    private boolean hitRuleActive = false;
 
-    public GameController(Board board, List<Player> players) {
+    public GameController(Board board, List<Player> players, boolean hitRuleActive, DiceShaker diceRoller) {
         this.board = board;
         this.players = players;
         this.currentPlayerIndex = 0; // Start with the first player
-        this.diceRoller = new TestDiceRoll();
+        this.hitRuleActive = hitRuleActive;
+        this.diceRoller = diceRoller;
     }
 
     public void startGame() {
@@ -46,37 +49,50 @@ public class GameController {
 
     private void movePlayer(Player player, int roll) {
         Position currentPos = player.getPosition();
+        Position newPosition= null;
         int newPositionNumber;
         int movement = 1;
         int skip = 0;
 
         for (int i = 0; i < roll; i++) {
-            newPositionNumber = (currentPos.getNumber() + movement + skip) % board.getBoardSize();
+            // Adjusting to always get a value between 1 and board.getBoardSize()
+            newPositionNumber = ((currentPos.getNumber() + movement + skip - 1) % board.getBoardSize()) + 1;
 
-            // If the player overshoots, move them to their tail start position
-            if (newPositionNumber > board.getBoardSize()) {
-                newPositionNumber = board.getTailStart(player.getColor());
+            // Moving the player
+            newPosition = board.getPosition(newPositionNumber);
+            player.setPosition(newPosition);
+            currentPos = newPosition;
+
+            //overshoot logic
+            if (newPosition.getType() == PositionType.END && roll > i + 1) {
+                movement = -1;
+                System.out.println(player.getColor() + " overshoots and moves back to " + newPosition);
             }
 
+            // Skip logic
             int nextPosNum = ((newPositionNumber) % board.getBoardSize()) + 1;
             Position nextPos = board.getPosition(nextPosNum);
             if (nextPos.getType() == PositionType.TAIL && nextPos.getOwner() != player.getColor()) {
-                skip = 3;
+                skip = board.getTailLength();
                 System.out.println(player.getColor() + " skips " + nextPos.getOwner() + "'s tail");
             } else {
                 skip = 0;
             }
-
-            Position newPosition = board.getPosition(newPositionNumber);
-            player.setPosition(newPosition);
-
-            // Update currentPos so the next iteration moves from the new position.
-            currentPos = newPosition;
-
-            System.out.println(player.getColor() + " moves to " + newPosition);
         }
 
+        // Hit logic
+        if (hitRuleActive) {
+            for (Player otherPlayer : players) {
+                if (otherPlayer != player && otherPlayer.getPosition() == newPosition) {
+                    System.out.println(player.getColor() + " hits " + otherPlayer.getColor() + " back to home");
+                    otherPlayer.setPosition(board.getHomePosition(otherPlayer.getColor()));
+                }
+            }
+        }
+
+        System.out.println(player.getColor() + " moves to " + newPosition);
     }
+
 
     private void nextTurn() {
         currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
