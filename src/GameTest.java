@@ -1,6 +1,6 @@
 import Game.GameConfig;
 import Game.GameController;
-import Game.LoggingGameEventListener;
+import Game.Logger.LoggingGameEventListener;
 
 public class  GameTest {
     public static void main(String[] args) {

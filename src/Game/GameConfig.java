@@ -9,20 +9,25 @@ import Board.Board;
 import Board.Color;
 import Board.BoardBuilder;
 import Dice.*;
+import Game.Rules.HitRule;
+import Game.Rules.OvershootRule;
+import Game.Rules.PlayerMovementRules;
+import Game.Rules.SkipRule;
 
 public class GameConfig {
 
     public GameController configureGameFromInput() {
         Scanner scanner = new Scanner(System.in);
 
-        // Get board configuration.
+        // Get board position numbers
         System.out.print("Enter the number of regular board positions: ");
         int boardSize = scanner.nextInt();
 
+        // Get board tail numbers
         System.out.print("Enter the tail length: ");
         int tailLength = scanner.nextInt();
 
-        // Get player configuration.
+        // Get player numbers and set their colors
         System.out.print("Enter the number of players (max 4): ");
         int numPlayers = scanner.nextInt();
         scanner.nextLine();
@@ -37,30 +42,54 @@ public class GameConfig {
             playerColors.add(availableColors.get(i));
         }
 
-        System.out.print("Enable hit rule? (true/false): ");
-        boolean hitRuleEnabled = scanner.nextBoolean();
-        scanner.nextLine();
-
-        System.out.print("Select dice type (single, double, test): ");
-        String diceType = scanner.nextLine().trim();
-
+        // Create the board with the given data from user
         Board board = new BoardBuilder()
                 .setBoardSize(boardSize)
                 .setTailLength(tailLength)
                 .setPlayers(playerColors)
                 .build();
 
+        // create the player objects
         List<Player> players = new ArrayList<>();
         for (Color color : playerColors) {
             players.add(new Player(color, board.getHomePosition(color)));
         }
 
-        // Create a DiceShaker using the DiceFactory.
+
+        // create a list for piossible rules
+        List<PlayerMovementRules> rules = new ArrayList<>();
+
+        // set skip rule to true it is always enabled
+        rules.add(new SkipRule());
+
+        // set hit rule
+        System.out.print("Enable hit rule? (true/false): ");
+        if (scanner.nextBoolean()) {
+            rules.add(new HitRule(players));
+        }
+        scanner.nextLine();
+
+        // set overshoot rule
+        System.out.print("Enable overshoot rule? (true/false): ");
+        if (scanner.nextBoolean()) {
+            rules.add(new OvershootRule());
+        }
+        scanner.nextLine();
+
+        // set dice type
+        System.out.print("Select dice type (single, double, test): ");
+        String diceType = scanner.nextLine().trim();
+
+        // Close the scanner
+        scanner.close();
+        System.out.println("Settings saved\n");
+
+
+
+        // Create a DiceShaker using the DiceFactory
         DiceShaker diceShaker = DiceFactory.createDice(diceType);
 
-        // Create the Game.GameController with the board, players, and hit rule flag.
-        GameController gameController = new GameController(board, players, hitRuleEnabled, diceShaker);
-
-        return gameController;
+        // Create and return the GameController with the board, players and slected rules.
+        return new GameController(board, players, rules, diceShaker);
     }
 }

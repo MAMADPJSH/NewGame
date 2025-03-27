@@ -6,23 +6,19 @@ import java.util.List;
 import Board.Board;
 import Board.PositionType;
 import Dice.DiceShaker;
+import Game.Logger.GameEventListener;
+import Game.Rules.PlayerMovementRules;
 
 public class GameController {
-    private Board board;
-    private List<Player> players;
-    private DiceShaker diceRoller;
-    private boolean hitRuleActive;
-    private TurnManager turnManager;
-    private PlayerMover playerMover;
-    private List<GameEventListener> listeners = new ArrayList<>();
+    private final DiceShaker diceRoller;
+    private final TurnManager turnManager;
+    private final PlayerMover playerMover;
+    private final List<GameEventListener> listeners = new ArrayList<>();
 
-    public GameController(Board board, List<Player> players, boolean hitRuleActive, DiceShaker diceRoller) {
-        this.board = board;
-        this.players = players;
+    public GameController(Board board, List<Player> players, List<PlayerMovementRules> rules, DiceShaker diceRoller) {
         this.diceRoller = diceRoller;
-        this.hitRuleActive = hitRuleActive;
         this.turnManager = new TurnManager(players);
-        this.playerMover = new PlayerMover(board, players, hitRuleActive);
+        this.playerMover = new PlayerMover(board, players, rules);
     }
 
     // Register observers and pass them on to components that notify events.

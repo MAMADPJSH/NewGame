@@ -1,20 +1,25 @@
 package Game;
 
 import Board.Board;
+import Board.Position;
+import Board.PositionType;
+import Game.Logger.GameEventListener;
+import Game.Rules.HitRule;
+import Game.Rules.PlayerMovementRules;
 
 import java.util.ArrayList;
 import java.util.List;;
 
 public class PlayerMover {
-    private Board board;
-    private List<Player> players;
-    private boolean hitRuleActive;
-    private List<GameEventListener> listeners = new ArrayList<>();
+    private final Board board;
+    private final List<PlayerMovementRules> rules;
+    private final List<Player> players;
+    private final List<GameEventListener> listeners = new ArrayList<>();
 
-    public PlayerMover(Board board, List<Player> players, boolean hitRuleActive) {
+    public PlayerMover(Board board, List<Player> players, List<PlayerMovementRules> rules) {
         this.board = board;
         this.players = players;
-        this.hitRuleActive = hitRuleActive;
+        this.rules = rules;
     }
 
     // Register observers to be notified when a player moves.
@@ -25,39 +30,18 @@ public class PlayerMover {
     public void movePlayer(Player player, int roll) {
         Position currentPos = player.getPosition();
         Position newPosition = null;
-        int movement = 1;
-        int skip = 0;
 
         for (int i = 0; i < roll; i++) {
-            int newPositionNumber = ((currentPos.getNumber() + movement + skip - 1) % board.getBoardSize()) + 1;
+            int newPositionNumber = ((currentPos.getNumber() + player.getMovement() + player.getSkip() - 1) % board.getBoardSize()) + 1;
             newPosition = board.getPosition(newPositionNumber);
             player.setPosition(newPosition);
             currentPos = newPosition;
 
-            // Overshoot logic: if player overshoots the END, reverse direction.
-            if (newPosition.getType() == PositionType.END && roll > i + 1) {
-                movement = -1;
-                System.out.println(player.getColor() + " overshoots and moves back to " + newPosition);
-            }
-
-            // Skip logic: if next position is a tail of an opponent, skip positions.
-            int nextPosNum = ((newPositionNumber) % board.getBoardSize()) + 1;
-            Position nextPos = board.getPosition(nextPosNum);
-            if (nextPos.getType() == PositionType.TAIL && nextPos.getOwner() != player.getColor()) {
-                skip = board.getTailLength();
-                System.out.println(player.getColor() + " skips " + nextPos.getOwner() + "'s tail");
-            } else {
-                skip = 0;
-            }
-        }
-
-        // Hit logic: if another player is on the landing position, send them back to home.
-        if (hitRuleActive) {
-            for (Player otherPlayer : players) {
-                if (otherPlayer != player && otherPlayer.getPosition() == newPosition) {
-                    System.out.println(player.getColor() + " hits " + otherPlayer.getColor() + " back to home");
-                    otherPlayer.setPosition(board.getHomePosition(otherPlayer.getColor()));
+            for (PlayerMovementRules rule : rules) {
+                if (rule instanceof HitRule && i < roll - 1) {
+                    continue;
                 }
+                rule.applyRule(player, newPosition, board);
             }
         }
 

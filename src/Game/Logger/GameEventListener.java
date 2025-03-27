@@ -1,6 +1,7 @@
-package Game;
+package Game.Logger;
 
 import Board.Position;
+import Game.Player;
 
 public interface GameEventListener {
     void onDiceRolled(int result);
