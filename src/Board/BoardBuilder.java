@@ -1,3 +1,5 @@
+package Board;
+
 import java.util.List;
 
 public class BoardBuilder {
@@ -20,10 +22,10 @@ public class BoardBuilder {
         return this;
     }
 
-    // Build and return a new Board
+    // Build and return a new Board.Board
     public Board build() {
         if (boardSize <= 0) {
-            throw new IllegalArgumentException("Board size must be positive.");
+            throw new IllegalArgumentException("Board.Board size must be positive.");
         }
         if (tailLength <= 0) {
             throw new IllegalArgumentException("Tail length must be positive.");

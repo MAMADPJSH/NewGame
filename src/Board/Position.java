@@ -1,3 +1,5 @@
+package Board;
+
 public class Position {
     private final int number;
     private final String displayableNumber;
@@ -29,7 +31,7 @@ public class Position {
 
     @Override
     public String toString() {
-        return "Position{" + "number=" + this.getNumber() + " displayableNumber=" + this.getDisplayableNumber() + ", type=" + this.getType() + ", owner=" + this.getOwner() + "}";
+        return "Board.Position{" + "number=" + this.getNumber() + " displayableNumber=" + this.getDisplayableNumber() + ", type=" + this.getType() + ", owner=" + this.getOwner() + "}";
     }
 }
 

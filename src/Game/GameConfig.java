@@ -1,7 +1,13 @@
+package Game;
+
 import java.util.Scanner;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import Board.Board;
+import Board.Color;
+import Board.BoardBuilder;
 import Dice.*;
 
 public class GameConfig {
@@ -52,7 +58,7 @@ public class GameConfig {
         // Create a DiceShaker using the DiceFactory.
         DiceShaker diceShaker = DiceFactory.createDice(diceType);
 
-        // Create the GameController with the board, players, and hit rule flag.
+        // Create the Game.GameController with the board, players, and hit rule flag.
         GameController gameController = new GameController(board, players, hitRuleEnabled, diceShaker);
 
         return gameController;

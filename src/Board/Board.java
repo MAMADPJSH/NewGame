@@ -1,3 +1,5 @@
+package Board;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -60,13 +62,10 @@ public class Board {
 
     private void adjustDisplayNumbers() {
         int boardCounter = 1;
-        // Loop over all positions in mainPositions.
         for (int i = 0; i < mainPositions.size(); i++) {
             Position pos = mainPositions.get(i);
             // Only update displayableNumber for REGULAR and HOME types.
             if (pos.getType() == PositionType.REGULAR || pos.getType() == PositionType.HOME) {
-                // Create a new Position with the same number, type, and owner,
-                // but set the displayableNumber to boardCounter (converted to a string)
                 mainPositions.set(i, new Position(pos.getNumber(), String.valueOf(boardCounter), pos.getType(), pos.getOwner()));
                 boardCounter++;
             }
@@ -79,7 +78,7 @@ public class Board {
 
     public Position getHomePosition(Color player) {
         if (!homePositions.containsKey(player)) {
-            throw new IllegalArgumentException("Player " + player + " does not exist on this board.");
+            throw new IllegalArgumentException("Game.Player " + player + " does not exist on this board.");
         }
         int homePosNumber = homePositions.get(player);
         return getPosition(new Position(homePosNumber,(player + " End"), PositionType.HOME, player).getNumber());
@@ -91,13 +90,5 @@ public class Board {
 
     public int getTailLength() {
         return tailLength;
-    }
-
-    public int getTailStart(Color player) {
-        return tailStartPositions.getOrDefault(player, -1);
-    }
-
-    public int getEndPosition(Color player) {
-        return endPositions.getOrDefault(player, -1);
     }
 }

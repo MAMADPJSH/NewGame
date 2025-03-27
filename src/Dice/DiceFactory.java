@@ -5,16 +5,12 @@ public class DiceFactory {
         if (type == null) {
             throw new IllegalArgumentException("Dice type cannot be null.");
         }
-        switch (type.toLowerCase()) {
-            case "single":
-                return new SingleDiceRoll();
-            case "double":
-                return new DoubleDiceRoll();
-            case "test":
-                return new TestDiceRoll();
-            default:
-                throw new IllegalArgumentException("I dont have this dice cuh: " + type);
-        }
+        return switch (type.toLowerCase()) {
+            case "single" -> new SingleDiceRoll();
+            case "double" -> new DoubleDiceRoll();
+            case "test" -> new TestDiceRoll();
+            default -> throw new IllegalArgumentException("I dont have this dice cuh: " + type);
+        };
     }
 }
 

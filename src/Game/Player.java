@@ -1,3 +1,8 @@
+package Game;
+
+import Board.Position;
+import Board.Color;
+
 public class Player {
     private Color color;
     private Position position;
@@ -31,7 +36,7 @@ public class Player {
 
     @Override
     public String toString() {
-        return "Player " + color + " at " + position;
+        return "Game.Player " + color + " at " + position;
     }
 }
 
