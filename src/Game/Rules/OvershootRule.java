@@ -8,7 +8,7 @@ import Game.Player;
 
 public class OvershootRule implements PlayerMovementRules {
     @Override
-    public void applyRule(Player player, Position newPosition, Board board) {
+    public void applyRule(Player player, Position newPosition, Position currentPosition, Board board) {
         if (newPosition.getType() == PositionType.END) {
             System.out.println(player.getColor() + " overshoots and moves back.");
             player.setMovement(-1);

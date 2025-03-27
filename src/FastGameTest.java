@@ -9,10 +9,10 @@ public class FastGameTest {
         String simulatedInput =
                         "36\n"  + // number of regular board positions
                         "6\n"   + // tail length
-                        "4\n"   + // number of players
+                        "2\n"   + // number of players
                         "true\n" + // enable hit rule
                         "true\n" + // enable overshoot rule
-                        "test\n";  // dice type
+                        "double\n";  // dice type
 
         // Redirect System.in to use the simulated input
         System.setIn(new ByteArrayInputStream(simulatedInput.getBytes()));

@@ -39,7 +39,7 @@ public class GameController {
             playerMover.movePlayer(currentPlayer, diceRoll);
 
             // Check win condition.
-            if (currentPlayer.getPosition().getType() == PositionType.END) {
+            if (currentPlayer.getPosition().getType() == PositionType.END && currentPlayer.getPosition().getOwner() == currentPlayer.getColor()) {
                 notifyGameWon(currentPlayer);
                 gameWon = true;
             } else {

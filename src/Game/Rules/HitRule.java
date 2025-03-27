@@ -14,7 +14,7 @@ public class HitRule implements PlayerMovementRules {
     }
 
     @Override
-    public void applyRule(Player player, Position newPosition, Board board) {
+    public void applyRule(Player player, Position newPosition, Position currentPosition, Board board) {
         for (Player otherPlayer : players) {
             if (otherPlayer != player && otherPlayer.getPosition() == newPosition) {
                 System.out.println(player.getColor() + " hits " + otherPlayer.getColor() + " back to home.");
