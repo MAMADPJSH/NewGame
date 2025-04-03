@@ -9,10 +9,7 @@ import Board.Board;
 import Board.Color;
 import Board.BoardBuilder;
 import Dice.*;
-import Game.Rules.HitRule;
-import Game.Rules.OvershootRule;
-import Game.Rules.PlayerMovementRules;
-import Game.Rules.SkipRule;
+import Game.Rules.*;
 
 public class GameConfig {
 
@@ -80,8 +77,6 @@ public class GameConfig {
         System.out.print("Select dice type (single, double, test): ");
         String diceType = scanner.nextLine().trim();
 
-        // Close the scanner
-        scanner.close();
         System.out.println("Settings saved\n");
 
 

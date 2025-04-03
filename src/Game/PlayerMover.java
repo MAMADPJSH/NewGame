@@ -2,7 +2,6 @@ package Game;
 
 import Board.Board;
 import Board.Position;
-import Board.PositionType;
 import Game.Logger.GameEventListener;
 import Game.Rules.HitRule;
 import Game.Rules.PlayerMovementRules;
@@ -18,14 +17,13 @@ public class PlayerMover {
     public PlayerMover(Board board, List<Player> players, List<PlayerMovementRules> rules) {
         this.board = board;
         this.rules = rules;
-        int totalPlays = 0;
     }
 
-    public void movePlayer(Player player, int roll) {
-        Position currentPos = player.getPosition();
+    public void movePlayer(Player player, int roll, boolean undo) {
         Position newPosition = null;
 
         for (int i = 0; i < roll; i++) {
+            Position currentPos = player.getPosition();
             int newPositionNumber = ((currentPos.getNumber() + player.getMovement() + player.getSkip() - 1) % board.getBoardSize()) + 1;
             newPosition = board.getPosition(newPositionNumber);
             player.setPosition(newPosition);
@@ -36,10 +34,9 @@ public class PlayerMover {
                 }
                 rule.applyRule(player, newPosition, currentPos, board);
             }
+
         }
-
         notifyPlayerMoved(player, newPosition);
-
     }
 
     // Register observers to be notified when a player moves.

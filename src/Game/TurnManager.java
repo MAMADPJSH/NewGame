@@ -3,8 +3,10 @@ package Game;
 import java.util.List;
 
 public class TurnManager {
-    private List<Player> players;
+    private final List<Player> players;
     private int currentIndex;
+    private int turnCount;
+    private int individualTurn;
 
     public TurnManager(List<Player> players) {
         if (players == null || players.isEmpty()) {
@@ -12,6 +14,8 @@ public class TurnManager {
         }
         this.players = players;
         this.currentIndex = 0;
+        this.turnCount = 1;
+        this.individualTurn = 0;
     }
 
     public Player getCurrentPlayer() {
@@ -20,5 +24,23 @@ public class TurnManager {
 
     public void nextTurn() {
         currentIndex = (currentIndex + 1) % players.size();
+    }
+
+    public int getTurnCount() {
+        return turnCount;
+    }
+    public void incrementTurnCount() {
+        turnCount++;
+    }
+
+    public int getIndividualTurn() {
+        return individualTurn;
+    }
+    public void incrementIndividualTurnCount() {
+        individualTurn++;
+    }
+
+    public boolean isLastPlayer() {
+        return currentIndex == players.size() - 1;
     }
 }

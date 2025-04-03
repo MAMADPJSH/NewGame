@@ -10,6 +10,7 @@ public class Player {
     private boolean bounced;
     private int movement;
     private int skip;
+    private int turn;
 
     public Player(Color color, Position startPosition) {
         this.color = color;
