@@ -73,7 +73,7 @@ SimpleGame/
 
 1. Observer Pattern
 
-```
+```Java
 //GameEventListener
 package Game.Logger;
 
@@ -112,7 +112,7 @@ public class LoggingGameEventListener implements GameEventListener {
 
 ## Usage example:
 
-```
+```Java
 if (currentPlayer.getPosition().getType() == PositionType.END
                     && currentPlayer.getPosition().getOwner() == currentPlayer.getColor()) {
                 notifyGameWon(currentPlayer); // USED ONE OF THE METHODS HERE
@@ -126,7 +126,7 @@ This decouples the logging process therefore making it easier to change the outp
 
 2. Factory Pattern
 
-```
+```Java
 package Dice;
 
 public class DiceFactory {
@@ -146,7 +146,7 @@ public class DiceFactory {
 
 ## Usuage Example:
 
-```
+```Java
 // GameConfig.java
 
         // set dice type
@@ -167,7 +167,7 @@ I decided to use a Simple factory design as I was taking a string from the user.
 
 3. Strategy Pattern
 
-```
+```Java
 package Game.Rules;
 
 import Board.Board;
@@ -208,7 +208,7 @@ public class HitRule implements PlayerMovementRules {
 
 ## Usuage Example:
 
-```
+```Java
 // PlayerMover.java
 
 for (PlayerMovementRules rule : rules) {
@@ -225,7 +225,7 @@ I tried to write the rules in the movePlayer method but the method was handeling
 
 3. Builder Pattern
 
-```
+```Java
 package Board;
 
 import java.util.List;
@@ -268,7 +268,7 @@ public class BoardBuilder {
 
 ## Usuage Example:
 
-```
+```Java
 //GameConfig.java
 // Create the board with the given data from user
         Board board = new BoardBuilder()
@@ -290,7 +290,7 @@ This class just seperates the functionality of creating a single instance of a b
 4. Dependency Principle: I tried to make the GameController class to rely mostly on Interfaces because it is easier to switch out components at run time.
 
 # UML Diagram:
-```Mermaid
+```mermaid
 classDiagram
     class GameController {
         -DiceShaker diceRoller
