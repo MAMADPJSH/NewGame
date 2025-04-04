@@ -288,3 +288,179 @@ This class just seperates the functionality of creating a single instance of a b
 2. Open/Closed Principle: The design is open for extension but closed for modification. This can be seen used in the PlayerMovementRules interface without changing the original code I can extend on the functionality.
 3. Interface Segregation Principle: I have not used many interfaces but I had GameEventListener, DiceShaker, and PlayerMovementRules which helped classes not depend on methods they dont need to use. Clearing the code and improved readablity.
 4. Dependency Principle: I tried to make the GameController class to rely mostly on Interfaces because it is easier to switch out components at run time.
+
+# UML Diagram:
+```Mermaid
+classDiagram
+    class GameController {
+        -DiceShaker diceRoller
+        -TurnManager turnManager
+        -PlayerMover playerMover
+        -List~GameEventListener~ listeners
+        +GameController(Board board, List~Player~ players, List~PlayerMovementRules~ rules, DiceShaker diceRoller)
+        +void addGameEventListener(GameEventListener listener)
+        +void startGame()
+        -void notifyDiceRolled(int result)
+        -void notifyGameWon(Player winner)
+    }
+
+    class Player {
+        -Color color
+        -Position position
+        -Position homePosition
+        -boolean bounced
+        -int movement
+        -int skip
+        -int turn
+        +Player(Color color, Position startPosition)
+        +Color getColor()
+        +Position getPosition()
+        +void setPosition(Position newPosition)
+        +void setBackToHomePosition()
+        +boolean isBounced()
+        +void setBounced(boolean bounced)
+        +int getMovement()
+        +void setMovement(int movement)
+        +int getSkip()
+        +void setSkip(int skip)
+        +String toString()
+    }
+
+    class PlayerMover {
+        -Board board
+        -List~PlayerMovementRules~ rules
+        -List~GameEventListener~ listeners
+        +PlayerMover(Board board, List~Player~ players, List~PlayerMovementRules~ rules)
+        +void movePlayer(Player player, int roll, boolean undo)
+        +void addGameEventListener(GameEventListener listener)
+        -void notifyPlayerMoved(Player player, Position newPosition)
+    }
+
+    class TurnManager {
+        -List~Player~ players
+        -int currentIndex
+        -int turnCount
+        -int individualTurn
+        +TurnManager(List~Player~ players)
+        +Player getCurrentPlayer()
+        +void nextTurn()
+        +int getTurnCount()
+        +void incrementTurnCount()
+        +int getIndividualTurn()
+        +void incrementIndividualTurnCount()
+        +boolean isLastPlayer()
+    }
+
+    class Board {
+        -List~Position~ mainPositions
+        -Map~Color, Integer~ homePositions
+        -Map~Color, Integer~ tailStartPositions
+        -Map~Color, Integer~ endPositions
+        -int boardSize
+        -int tailLength
+        -int totalPositions
+        +Board(int boardSize, int tailLength, List~Color~ players)
+        +Position getPosition(int index)
+        +Position getHomePosition(Color player)
+        +int getBoardSize()
+        +int getTailLength()
+    }
+
+    class BoardBuilder {
+        -int boardSize
+        -int tailLength
+        -List~Color~ players
+        +BoardBuilder setBoardSize(int boardSize)
+        +BoardBuilder setTailLength(int tailLength)
+        +BoardBuilder setPlayers(List~Color~ players)
+        +Board build()
+    }
+
+    class Position {
+        -int number
+        -String displayableNumber
+        -PositionType type
+        -Color owner
+        +Position(int number, String displayableNumber, PositionType type, Color owner)
+        +int getNumber()
+        +String getDisplayableNumber()
+        +PositionType getType()
+        +Color getOwner()
+        +String toString()
+    }
+
+    class DiceFactory {
+        +static DiceShaker createDice(String type)
+    }
+
+    class DiceShaker {
+        <<interface>>
+        +int roll()
+    }
+
+    class SingleDiceRoll {
+        +int roll()
+    }
+
+    class DoubleDiceRoll {
+        +int roll()
+    }
+
+    class TestDiceRoll {
+        +int roll()
+    }
+
+    class GameEventListener {
+        <<interface>>
+        +void onDiceRolled(int result)
+        +void onPlayerMoved(Player player, Position newPosition)
+        +void onGameWon(Player winner)
+    }
+
+    class LoggingGameEventListener {
+        +void onDiceRolled(int result)
+        +void onPlayerMoved(Player player, Position newPosition)
+        +void onGameWon(Player winner)
+    }
+
+    class PlayerMovementRules {
+        <<interface>>
+        +void applyRule(Player player, Position newPosition, Position currentPosition, Board board)
+    }
+
+    class HitRule {
+        -List~Player~ players
+        +HitRule(List~Player~ players)
+        +void applyRule(Player player, Position newPosition, Position currentPosition, Board board)
+    }
+
+    class SkipRule {
+        +void applyRule(Player player, Position newPosition, Position currentPosition, Board board)
+    }
+
+    class OvershootRule {
+        +void applyRule(Player player, Position newPosition, Position currentPosition, Board board)
+    }
+
+    GameController --> DiceShaker
+    GameController --> TurnManager
+    GameController --> PlayerMover
+    GameController --> GameEventListener
+    PlayerMover --> Board
+    PlayerMover --> PlayerMovementRules
+    PlayerMover --> GameEventListener
+    TurnManager --> Player
+    Board --> Position
+    Board --> Color
+    BoardBuilder --> Board
+    Position --> PositionType
+    Position --> Color
+    DiceFactory --> DiceShaker
+    SingleDiceRoll --> DiceShaker
+    DoubleDiceRoll --> DiceShaker
+    TestDiceRoll --> DiceShaker
+    LoggingGameEventListener --> GameEventListener
+    HitRule --> PlayerMovementRules
+    SkipRule --> PlayerMovementRules
+    OvershootRule --> PlayerMovementRules
+```
