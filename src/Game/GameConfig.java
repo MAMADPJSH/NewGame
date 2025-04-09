@@ -8,7 +8,7 @@ import java.util.Arrays;
 import Board.Board;
 import Board.Color;
 import Board.BoardBuilder;
-import Dice.*;
+import Game.Dice.*;
 import Game.Rules.*;
 
 public class GameConfig {

@@ -18,7 +18,7 @@ When you run the code, the game will go into configuration mode so it will ask y
 2. 3 Tails
 3. Hit turned on
 4. Overshoot turned on
-5. Single Dice
+5. Single Game.Dice
 
 #### Default 4 player settings:
 
@@ -26,7 +26,7 @@ When you run the code, the game will go into configuration mode so it will ask y
 2. 6 Tails
 3. Hit turned on
 4. Overshoot turned on
-5. Double Dice
+5. Double Game.Dice
 
 ## Project Structure
 
@@ -49,7 +49,7 @@ SimpleGame/
 │   │   ├── Player.java                       // Player object
 │   │   ├── PlayerMover.java                  // Stores player movement logic
 │   │   └── TurnManager.java                  // Manages the turn logic
-│   ├── Dice/
+│   ├── Game.Dice/
 │   │   ├── DiceShaker.java                   // Interface for handeling dice rolls.
 │   │   ├── SingleDiceFactory.java            // Single dice roller
 │   │   ├── DoubleDiceFactory.java            // Double dice roller
@@ -68,6 +68,17 @@ SimpleGame/
 │   └── flow_diagram.png     // Flow diagram of the game process
 └── README.md
 ```
+
+## Game Flow
+When the GameTest.java is ran, it will call the GameConfig.java class which will ask the user for the configuration of the game. After that it will create a Board object and a GameController object. The GameController will then start the game and handle the game logic. The TurnManager will manage the turns of the players and the PlayerMover will handle the movement of the players. The GameEventListener will log the events of the game.
+
+## Key Classes
+1. Board.java: This class is basically an object that holds an array of Position classes and handles the board logic and the positions of the players. 
+2. GameController.java: This class is the main controller of the game. It handles the game logic and the flow of the game. It also handles the events of the game and notifies the listeners.
+3. Player.java: This class is the player object. It holds the color of the player, the position of the player and the home position of the player. It stores important data about how the player moves but does not handle the movement logic.
+4. PlayerMover.java: This class handles the movement of the players. It handles the rules of the game and the movement of the players. It also handles the events of the game and notifies the listeners.
+5. TurnManager.java: This class manages the turns of the players. It handles the logic of the turns and the order of the players. It also handles the events of the game and notifies the listeners.
+6. GameConfig.java: This class handles the configuration of the game. It takes the input from the user and creates the Board and GameController objects. It also handles the events of the game and notifies the listeners.
 
 # Software Design Techniques
 
@@ -95,7 +106,7 @@ import Game.Player;
 public class LoggingGameEventListener implements GameEventListener {
     @Override
     public void onDiceRolled(int result) {
-        System.out.println("[Observer] Dice rolled with result: " + result);
+        System.out.println("[Observer] Game.Dice rolled with result: " + result);
     }
 
     @Override
@@ -127,12 +138,12 @@ This decouples the logging process therefore making it easier to change the outp
 2. Factory Pattern
 
 ```Java
-package Dice;
+package Game.Dice;
 
 public class DiceFactory {
     public static DiceShaker createDice(String type) {
         if (type == null) {
-            throw new IllegalArgumentException("Dice type cannot be null.");
+            throw new IllegalArgumentException("Game.Dice type cannot be null.");
         }
         return switch (type.toLowerCase()) {
             case "single" -> new SingleDiceRoll();

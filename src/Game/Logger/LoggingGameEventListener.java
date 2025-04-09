@@ -6,7 +6,7 @@ import Game.Player;
 public class LoggingGameEventListener implements GameEventListener {
     @Override
     public void onDiceRolled(int result) {
-        System.out.println("[Observer] Dice rolled with result: " + result);
+        System.out.println("[Observer] Game.Dice rolled with result: " + result);
     }
 
     @Override

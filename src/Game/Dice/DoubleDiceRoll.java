@@ -1,4 +1,4 @@
-package Dice;
+package Game.Dice;
 
 public class DoubleDiceRoll implements DiceShaker{
 

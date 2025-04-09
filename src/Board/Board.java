@@ -32,12 +32,11 @@ public class Board {
             mainPositions.add(new Position(i, ("" + i), PositionType.REGULAR, null));
         }
 
-
-        int segmentSize = (totalPositions) / players.size(); // Spacing for home positions
-
         for (int i = 0; i < players.size(); i++) {
+            int segmentSize = totalPositions / players.size(); // Spacing for home positions
+            System.out.println("Segment Size: " + segmentSize);
             Color player = players.get(i);
-            int homePos = (i * segmentSize) + 1;
+            int homePos =(i * segmentSize) + 1;
             homePositions.put(player, homePos);
             mainPositions.set(homePos - 1, new Position(homePos, String.valueOf(homePos), PositionType.HOME, player));
 
@@ -90,5 +89,23 @@ public class Board {
 
     public int getTailLength() {
         return tailLength;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Board Size: ").append(boardSize).append("\n")
+                .append("Tail Length: ").append(tailLength).append("\n")
+                .append("Total Positions: ").append(totalPositions).append("\n")
+                .append("Home Positions: ").append(homePositions).append("\n")
+                .append("Tail Start Positions: ").append(tailStartPositions).append("\n")
+                .append("End Positions: ").append(endPositions).append("\n")
+                .append("Main Positions:\n");
+
+        for (Position pos : mainPositions) {
+            sb.append(pos.toString()).append("\n");
+        }
+
+        return sb.toString();
     }
 }

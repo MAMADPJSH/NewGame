@@ -1,9 +1,9 @@
-package Dice;
+package Game.Dice;
 
 public class DiceFactory {
     public static DiceShaker createDice(String type) {
         if (type == null) {
-            throw new IllegalArgumentException("Dice type cannot be null.");
+            throw new IllegalArgumentException("Game.Dice type cannot be null.");
         }
         return switch (type.toLowerCase()) {
             case "single" -> new SingleDiceRoll();

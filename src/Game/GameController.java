@@ -5,7 +5,7 @@ import java.util.List;
 
 import Board.Board;
 import Board.PositionType;
-import Dice.DiceShaker;
+import Game.Dice.DiceShaker;
 import Game.Logger.GameEventListener;
 import Game.Rules.PlayerMovementRules;
 
