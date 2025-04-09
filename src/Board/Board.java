@@ -34,7 +34,6 @@ public class Board {
 
         for (int i = 0; i < players.size(); i++) {
             int segmentSize = totalPositions / players.size(); // Spacing for home positions
-            System.out.println("Segment Size: " + segmentSize);
             Color player = players.get(i);
             int homePos =(i * segmentSize) + 1;
             homePositions.put(player, homePos);
