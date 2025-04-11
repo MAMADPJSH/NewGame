@@ -70,6 +70,8 @@ public class GameConfig {
         System.out.print("Enable overshoot rule? (true/false): ");
         if (scanner.nextBoolean()) {
             rules.add(new OvershootRule());
+        } else {
+            rules.add(new NoOvershootRule());
         }
         scanner.nextLine();
 
