@@ -18,5 +18,21 @@ public class LoggingGameEventListener implements GameEventListener {
     public void onGameWon(Player winner) {
         System.out.println("[Observer] Game won by: " + winner.getColor());
     }
+
+    @Override
+    public void onGameStart() {
+        System.out.println("[Observer] Starting the Simple Frustration Game!");
+    }
+
+    @Override
+    public void onPlayerTurnStart(Player player, int individualTurnCount) {
+        System.out.println("[Observer] Turn: " + individualTurnCount);
+        System.out.println("[Observer] " + player.getColor() + ", it's your turn.");
+    }
+
+    @Override
+    public void onTurnCountUpdated(int totalTurns) {
+        System.out.println("[Observer] Amount of turns: " + totalTurns);
+    }
 }
 

@@ -29,11 +29,11 @@ public class GameController {
     public void startGame() {
         boolean gameWon = false;
 
-        System.out.println("Starting the Simple Frustration Game!");
+        notifyGameStart();
 
         while (!gameWon) {
             Player currentPlayer = turnManager.getCurrentPlayer();
-            System.out.println("Turn: " + turnManager.getIndividualTurn() + "\n" + currentPlayer.getColor() + ", it's your turn.");
+            notifyPlayerTurnStart(currentPlayer, turnManager.getIndividualTurn());
 
             int diceRoll = diceRoller.roll();
             notifyDiceRolled(diceRoll);
@@ -45,7 +45,7 @@ public class GameController {
             if (currentPlayer.getPosition().getType() == PositionType.END
                     && currentPlayer.getPosition().getOwner() == currentPlayer.getColor()) {
                 notifyGameWon(currentPlayer);
-                System.out.println("Amount of turns: " + turnManager.getTurnCount());
+                notifyTurnCountUpdated(turnManager.getTurnCount());
                 gameWon = true;
             } else {
                 if (turnManager.isLastPlayer()) {
@@ -67,6 +67,24 @@ public class GameController {
     private void notifyGameWon(Player winner) {
         for (GameEventListener listener : listeners) {
             listener.onGameWon(winner);
+        }
+    }
+
+    private void notifyGameStart() {
+        for (GameEventListener listener : listeners) {
+            listener.onGameStart();
+        }
+    }
+
+    private void notifyPlayerTurnStart(Player player, int individualTurnCount) {
+        for (GameEventListener listener : listeners) {
+            listener.onPlayerTurnStart(player, individualTurnCount);
+        }
+    }
+
+    private void notifyTurnCountUpdated(int totalTurns) {
+        for (GameEventListener listener : listeners) {
+            listener.onTurnCountUpdated(totalTurns);
         }
     }
 }

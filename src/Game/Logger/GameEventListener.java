@@ -7,5 +7,8 @@ public interface GameEventListener {
     void onDiceRolled(int result);
     void onPlayerMoved(Player player, Position newPosition);
     void onGameWon(Player winner);
+    void onGameStart();
+    void onPlayerTurnStart(Player player, int individualTurnCount);
+    void onTurnCountUpdated(int totalTurns);
 }
 
