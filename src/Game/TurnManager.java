@@ -14,7 +14,7 @@ public class TurnManager {
         }
         this.players = players;
         this.currentIndex = 0;
-        this.turnCount = 1;
+        this.turnCount = 0;
         this.individualTurn = 0;
     }
 

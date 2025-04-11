@@ -21,7 +21,6 @@ public class GameController {
         this.playerMover = new PlayerMover(board, players, rules);
     }
 
-    // Register observers and pass them on to components that notify events.
     public void addGameEventListener(GameEventListener listener) {
         listeners.add(listener);
         playerMover.addGameEventListener(listener);

@@ -2,7 +2,7 @@ package Game.Dice;
 
 public class TestDiceRoll implements DiceShaker{
 
-    int[] rolls = {12,12,7,11,3,3};
+    int[] rolls = {6,6,6,6,3,4,3,4};
     int index = 0;
 
     @Override
