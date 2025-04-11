@@ -10,7 +10,6 @@ public class NoOvershootRule implements PlayerMovementRules{
     @Override
     public void applyRule(Player player, Position newPosition, Position currentPosition, Board board, boolean isLastStep) {
         if (player.getColor() == currentPosition.getOwner() && newPosition.getType() == PositionType.END && !isLastStep) {
-            System.out.println(player.getColor() + " overshoots and moves back.");
             player.setMovement(0);
         }
     }

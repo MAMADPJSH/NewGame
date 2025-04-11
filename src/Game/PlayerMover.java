@@ -32,9 +32,9 @@ public class PlayerMover {
             for (PlayerMovementRules rule : rules) {
                 rule.applyRule(player, newPosition, currentPos, board, isLastStep);
             }
-            notifyPlayerMoved(player, newPosition);
-        }
 
+        }
+        notifyPlayerMoved(player, newPosition);
         player.setMovement(1);
 
     }
