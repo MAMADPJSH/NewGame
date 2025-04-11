@@ -19,27 +19,26 @@ public class PlayerMover {
         this.rules = rules;
     }
 
-    public void movePlayer(Player player, int roll, boolean undo) {
+    public void movePlayer(Player player, int roll) {
         Position newPosition = null;
 
-        for (int i = 0; i < roll; i++) {
+        for (int i = roll; i > 0; i--) {
             Position currentPos = player.getPosition();
             int newPositionNumber = ((currentPos.getNumber() + player.getMovement() + player.getSkip() - 1) % board.getBoardSize()) + 1;
             newPosition = board.getPosition(newPositionNumber);
             player.setPosition(newPosition);
 
+            boolean isLastStep = (i == 1);
             for (PlayerMovementRules rule : rules) {
-                if (rule instanceof HitRule && i < roll - 1) {
-                    continue;
-                }
-                rule.applyRule(player, newPosition, currentPos, board);
+                rule.applyRule(player, newPosition, currentPos, board, isLastStep);
             }
-
+            notifyPlayerMoved(player, newPosition);
         }
-        notifyPlayerMoved(player, newPosition);
+
+        player.setMovement(1);
+
     }
 
-    // Register observers to be notified when a player moves.
     public void addGameEventListener(GameEventListener listener) {
         listeners.add(listener);
     }

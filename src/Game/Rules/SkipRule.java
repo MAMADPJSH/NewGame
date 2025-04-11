@@ -6,7 +6,7 @@ import Game.Player;
 
 public class SkipRule implements PlayerMovementRules {
     @Override
-    public void applyRule(Player player, Position newPosition, Position currentPosition, Board board) {
+    public void applyRule(Player player, Position newPosition, Position currentPosition, Board board, boolean isLastStep) {
         int nextPosNum = ((newPosition.getNumber()) % board.getBoardSize()) + 1;
         Position nextPos = board.getPosition(nextPosNum);
         if (nextPos.getType() == PositionType.TAIL && nextPos.getOwner() != player.getColor()) {

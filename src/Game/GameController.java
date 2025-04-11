@@ -29,7 +29,6 @@ public class GameController {
 
     public void startGame() {
         boolean gameWon = false;
-        boolean undo = false;
 
         System.out.println("Starting the Simple Frustration Game!");
 
@@ -40,7 +39,7 @@ public class GameController {
             int diceRoll = diceRoller.roll();
             notifyDiceRolled(diceRoll);
 
-            playerMover.movePlayer(currentPlayer, diceRoll, undo);
+            playerMover.movePlayer(currentPlayer, diceRoll);
             turnManager.incrementTurnCount();
 
             // Check win condition
